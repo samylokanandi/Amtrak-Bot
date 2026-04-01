@@ -1,22 +1,19 @@
 from playwright.sync_api import sync_playwright
 
-ORIGIN = "NYP"
-DESTINATION = "BOS"
-DATE = "04/15/2026"
-
 def get_prices():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)  # headless=False so you can watch it
+        browser = p.chromium.launch(headless=False)
         page = browser.new_page()
         
-        url = f"https://www.amtrak.com/tickets/depart/{ORIGIN}/to/{DESTINATION}/{DATE}/1/seat/United+States"
-        print(f"Going to: {url}")
+        print("Loading Wanderu...")
+        url = "https://www.wanderu.com/en-us/depart/New%20York%2C%20NY%2C%20US/Boston%2C%20MA%2C%20US/2026-04-15/?donly=true"
         page.goto(url, wait_until="networkidle", timeout=60000)
+        page.wait_for_timeout(5000)
         
-        # take a screenshot so we can see what loaded
-        page.screenshot(path="amtrak.png")
-        print("Screenshot saved as amtrak.png")
+        page.screenshot(path="wanderu.png")
+        print("Screenshot saved")
         
+        input("Press Enter to close...")
         browser.close()
 
 get_prices()
